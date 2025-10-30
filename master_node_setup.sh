@@ -1,9 +1,5 @@
 #!/bin/bash
 
-echo "changing hostname to k8s-master.node.internal"
-sudo hostnamectl set-hostname k8s-master.node.internal
-echo "hostname changed successfully"
-
 echo "updating system packages"
 sudo apt update && sudo apt upgrade -y
 echo "adding required kernel modules and network settings for kubernetes"

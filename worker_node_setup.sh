@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo hostnamectl set-hostname k8s-worker1.node.internal
 
 sudo apt update && sudo apt upgrade -y
 echo "adding required kernel modules and network settings for kubernetes"
