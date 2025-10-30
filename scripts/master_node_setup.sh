@@ -73,15 +73,15 @@ else
     echo "Failed to apply Flannel network plugin"
     exit 1
 fi
-echo "sleeping for 1minute to allow kube-apiserver to start"
-sleep 60
+echo "sleeping for 2minute to allow kube-apiserver to start"
+sleep 120
 
 master_node_status=$(kubectl get node k8s-master.node.internal | awk 'NR==2 {print $2}')
 if [ "$master_node_status" == "Ready" ]; then
     echo "Master node is Ready"
 else
     echo "Master node is not Ready yet. Current status: $master_node_status"
-    kube
+    kubectl get nodes -o wide
     exit 1
 fi
 kubectl get nodes -o wide   
