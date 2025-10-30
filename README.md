@@ -11,9 +11,12 @@ Use the scripts to setup kubernetes cluster
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
 	--key-name 'mumbai-key' \
+	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
 	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"master"}]}' \
+	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
+	--private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
 	--count '1' 
 ```
 
@@ -23,9 +26,12 @@ Worker VM <br>
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
 	--key-name 'mumbai-key' \
+	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
 	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"worker-1"}]}' \
+	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
+	--private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
 	--count '1' 
 ```
 
@@ -33,9 +39,12 @@ aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
 	--key-name 'mumbai-key' \
+	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
 	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"worker-2"}]}' \
+	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
+	--private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
 	--count '1' 
 ```
 
