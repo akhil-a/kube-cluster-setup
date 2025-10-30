@@ -66,14 +66,15 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 echo "kubeconfig file set up successfully"
-echo "sleeping for 10 seconds to allow kube-apiserver to start"
-slep 10
+echo "sleeping for 1minute to allow kube-apiserver to start"
+sleep 60
 
 master_node_status=$(kubectl get node k8s-master.node.internal | awk 'NR==2 {print $2}')
 if [ "$master_node_status" == "Ready" ]; then
     echo "Master node is Ready"
 else
     echo "Master node is not Ready yet. Current status: $master_node_status"
+    kube
     exit 1
 fi
 
