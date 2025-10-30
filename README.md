@@ -6,13 +6,36 @@ Use the scripts to setup kubernetes cluster
 ## Steps
 
 ### 1. Creating EC2 instances
+
+Creating Security Group
+
+```
+aws ec2 create-security-group --group-name testSecurityGroup --description "Security Group for Kubernetes Setup"  \
+  --vpc-id <vpc-id> --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=kube-setup-SG}]"
+```
+Add SSH and 30080 port to security group
+```
+aws ec2 authorize-security-group-ingress \
+    --group-id <security-group-id>\
+    --protocol tcp \
+    --port 22 \
+    --cidr 0.0.0.0/0
+```
+```
+aws ec2 authorize-security-group-ingress \
+    --group-id <security-group-id>\
+    --protocol tcp \
+    --port 30080 \
+    --cidr 0.0.0.0/0
+```
+
  Master VM
 ```
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
-	--key-name 'mumbai-key' \
+	--key-name '<key-name>' \
 	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
-	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
+	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["<security-group-id>"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"master"}]}' \
 	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
@@ -25,9 +48,9 @@ Worker VM <br>
 ```
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
-	--key-name 'mumbai-key' \
+	--key-name '<key-name>' \
 	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
-	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
+	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["<security-group-id>"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"worker-1"}]}' \
 	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
@@ -38,9 +61,9 @@ aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 ```
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
 	--instance-type 't2.medium' \
-	--key-name 'mumbai-key' \
+	--key-name '<key-name>' \
 	--block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-007c54c0145b150cd","VolumeSize":8,"VolumeType":"gp3","Throughput":125}}' \
-	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04ecb9f806f6e2593"]}' \
+	--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["<security-group-id>"]}' \
 	--credit-specification '{"CpuCredits":"standard"}' \
 	--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"worker-2"}]}' \
 	--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
