@@ -66,6 +66,13 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 echo "kubeconfig file set up successfully"
+kubectl apply -f kube-flannel.yaml
+if [ $? -eq 0 ]; then
+    echo "Flannel network plugin applied successfully"
+else
+    echo "Failed to apply Flannel network plugin"
+    exit 1
+fi
 echo "sleeping for 1minute to allow kube-apiserver to start"
 sleep 60
 
@@ -75,14 +82,6 @@ if [ "$master_node_status" == "Ready" ]; then
 else
     echo "Master node is not Ready yet. Current status: $master_node_status"
     kube
-    exit 1
-fi
-
-kubectl apply -f kube-flannel.yaml
-if [ $? -eq 0 ]; then
-    echo "Flannel network plugin applied successfully"
-else
-    echo "Failed to apply Flannel network plugin"
     exit 1
 fi
 kubectl get nodes -o wide   
