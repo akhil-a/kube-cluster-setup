@@ -29,6 +29,14 @@ aws ec2 authorize-security-group-ingress \
     --cidr 0.0.0.0/0
 ```
 
+```
+aws ec2 authorize-security-group-ingress \
+    --group-id <security-group-id>\
+    --protocol tcp \
+    --port 6443 \
+    --cidr 0.0.0.0/0
+```
+
  Master VM
 ```
 aws ec2 run-instances --image-id 'ami-02d26659fd82cf299' \
