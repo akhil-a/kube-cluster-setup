@@ -31,3 +31,12 @@ resource "aws_security_group_rule" "kube-nginx-ingress-rule" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.kube_sg.id
 }
+
+resource "aws_security_group_rule" "kube-nginx-ingress-rule" {
+  type              = "ingress"
+  from_port         = 6443
+  to_port           = 6443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.kube_sg.id
+}
